@@ -26,6 +26,8 @@ namespace BossEventController
         public const string PluginVersion = "0.0.1";
         private readonly Harmony harmony = new Harmony(PluginGUID);
 
+        private static ConfigEntry<float> _dragonSpitCooldown;
+
         private void Awake()
         {
             //// Do all your init stuff here
@@ -36,6 +38,14 @@ namespace BossEventController
             Config.Bind("Debug", "LogLevel", LogLevel.All,
                 new ConfigDescription("Enable Message Logging"));
 
+            var section = "Moder";
+            _dragonSpitCooldown = Config.Bind(section, "Skeleton Iceblock Cooldown", 25.0f, "Dragon spit projectile that spawns Ice blocks that will break into skeletons");
+
+            //Implement later on (JSON?)
+
+            //section = "Moder.Skeleton";
+            //_skeletonHealth = Config.Bind(section, "Health", 40, "Skeleton Health");
+            //_skeletonDamage = Config.Bind(section, "Damage", 20);
 
             Init(Logger, Config);
 
@@ -66,8 +76,12 @@ namespace BossEventController
 
                 var skeletonAi = skeletonPrefab.GetComponent<MonsterAI>();
                 if (skeletonAi == null) throw new NullReferenceException("Skeleton Monster AI");
-                skeletonAi.m_huntPlayer = true;
+                skeletonAi.m_enableHuntPlayer = true;
 
+                //Destroy drops, so it doesn't clutter up the players inventory
+                var skeletonDrop = skeletonPrefab.GetComponent<CharacterDrop>();
+                if (skeletonDrop != null)
+                    Destroy(skeletonDrop);
                 #endregion
 
                 summon.m_spawnWhenDestroyed = skeletonPrefab;
@@ -93,7 +107,7 @@ namespace BossEventController
                 if (drop == null) throw new NullReferenceException("Can't clone dragon_spit_shotgun");
 
                 drop.m_itemData.m_shared.m_attack.m_attackProjectile = iceProjectile;
-                drop.m_itemData.m_shared.m_aiAttackInterval = 25.0f;
+                drop.m_itemData.m_shared.m_aiAttackInterval = _dragonSpitCooldown.Value;
 
                 #endregion
 
