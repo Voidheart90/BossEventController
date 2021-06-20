@@ -1,29 +1,25 @@
-﻿// JotunnModStub
+﻿// BossControllerModStub
 // a Valheim mod skeleton using Jötunn
 // 
-// File:    JotunnModStub.cs
-// Project: JotunnModStub
+// File:    BossControllerModStub.cs
+// Project: BossControllerModStub
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using BepInEx;
 using UnityEngine;
 using BepInEx.Configuration;
-using Jotunn.Utils;
 using Common;
 using HarmonyLib;
-using Jotunn.Entities;
 using Jotunn.Managers;
 using static Common.LogEx;
-using Object = UnityEngine.Object;
 
 namespace BossEventController
 {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid)]
     //[NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
-    internal class JotunnModStub : BaseUnityPlugin
+    internal class BossControllerModStub : BaseUnityPlugin
     {
         public const string PluginGUID = "com.jotunn.BossEventController";
         public const string PluginName = "BossEventController";
